@@ -1,5 +1,8 @@
 import type { UrlInterface } from "@/models/url";
-import { UrlRepository } from "@/repositories/url-repository";
+import {
+  UrlRepository,
+  UrlInterfaceMinimal,
+} from "@/repositories/url-repository";
 import { HashUrl } from "@/utils/hash-url";
 
 interface CreateUrlUseCaseRequest {
@@ -7,7 +10,7 @@ interface CreateUrlUseCaseRequest {
 }
 
 interface CreateUrlUseCaseResponse {
-  data: UrlInterface;
+  data: UrlInterface | UrlInterfaceMinimal;
 }
 
 export class CreateUrlUseCase {
@@ -22,7 +25,7 @@ export class CreateUrlUseCase {
     const expires_at = new Date();
     expires_at.setDate(expires_at.getDate() + 5);
 
-    const short_code = await this.hashUrl.execute(url);
+    const short_code = this.hashUrl.execute(url);
 
     const data = await this.urlRepository.saveUrl({
       short_code,

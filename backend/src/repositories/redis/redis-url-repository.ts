@@ -1,6 +1,6 @@
-import { Redis } from "ioredis"; // Exemplo usando a biblioteca ioredis
+import { Redis } from "ioredis";
 import { UrlInterface } from "@/models/url";
-import { UrlRepository } from "../url-repository";
+import { UrlRepository, SaveUrlParams } from "../url-repository";
 
 export class CachedUrlRepository implements UrlRepository {
   private cacheKeyPrefix = "url:";
@@ -45,9 +45,7 @@ export class CachedUrlRepository implements UrlRepository {
     return urlFromDb;
   }
 
-  async saveUrl(
-    urlData: Omit<UrlInterface, "created_at">
-  ): Promise<UrlInterface> {
+  async saveUrl(urlData: SaveUrlParams): Promise<UrlInterface> {
     return this.decoratedRepository.saveUrl(urlData);
   }
 }

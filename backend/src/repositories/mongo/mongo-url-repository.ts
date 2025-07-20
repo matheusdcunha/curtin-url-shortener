@@ -1,5 +1,5 @@
 import { UrlInterface, UrlModel } from "@/models/url";
-import { UrlRepository } from "@/repositories/url-repository";
+import { UrlRepository, SaveUrlParams } from "@/repositories/url-repository";
 
 export class MongoUrlRepository implements UrlRepository {
   async findByShortCode(code: string): Promise<UrlInterface | null> {
@@ -8,9 +8,7 @@ export class MongoUrlRepository implements UrlRepository {
     return url;
   }
 
-  async saveUrl(
-    urlData: Omit<UrlInterface, "created_at">
-  ): Promise<UrlInterface> {
+  async saveUrl(urlData: SaveUrlParams): Promise<UrlInterface> {
     const newUrl = new UrlModel(urlData);
     await newUrl.save();
 
