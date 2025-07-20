@@ -4,6 +4,7 @@ import {
   UrlInterfaceMinimal,
 } from "@/repositories/url-repository";
 import { HashUrl } from "@/utils/hash-url";
+import { UrlSaveError } from "./erros/url-save-error";
 
 interface CreateUrlUseCaseRequest {
   url: string;
@@ -32,6 +33,10 @@ export class CreateUrlUseCase {
       original_url: url,
       expires_at,
     });
+
+    if (!data) {
+      throw new UrlSaveError();
+    }
 
     return { data };
   }

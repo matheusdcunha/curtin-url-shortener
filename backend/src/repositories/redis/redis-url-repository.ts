@@ -1,8 +1,12 @@
 import { Redis } from "ioredis";
 import { UrlInterface } from "@/models/url";
-import { UrlRepository, SaveUrlParams } from "../url-repository";
+import {
+  UrlRepository,
+  SaveUrlParams,
+  UrlInterfaceMinimal,
+} from "../url-repository";
 
-export class CachedUrlRepository implements UrlRepository {
+export class RedisUrlRepository implements UrlRepository {
   private cacheKeyPrefix = "url:";
 
   private cacheTime = 5 * 24 * 60 * 60; // 5 days in second
@@ -13,7 +17,9 @@ export class CachedUrlRepository implements UrlRepository {
     private redisClient: Redis
   ) {}
 
-  async findByShortCode(code: string): Promise<UrlInterface | null> {
+  async findByShortCode(
+    code: string
+  ): Promise<UrlInterface | UrlInterfaceMinimal | null> {
     const cacheKey = `${this.cacheKeyPrefix}${code}`;
 
     try {
@@ -45,7 +51,9 @@ export class CachedUrlRepository implements UrlRepository {
     return urlFromDb;
   }
 
-  async saveUrl(urlData: SaveUrlParams): Promise<UrlInterface> {
+  async saveUrl(
+    urlData: SaveUrlParams
+  ): Promise<UrlInterface | UrlInterfaceMinimal> {
     return this.decoratedRepository.saveUrl(urlData);
   }
 }
