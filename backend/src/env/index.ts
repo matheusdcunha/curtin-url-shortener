@@ -5,6 +5,11 @@ import { z } from "zod";
 const envSchema = z.object({
   NODE_ENV: z.enum(["dev", "test", "production"]).default("dev"),
   PORT: z.coerce.number().default(3333),
+  MONGO_HOST: z.string(),
+  MONGO_PORT: z.coerce.number().default(27017),
+  MONGO_DB_NAME: z.string(),
+  REDIS_HOST: z.string(),
+  REDIS_PORT: z.coerce.number().default(6379),
 });
 
 const _env = envSchema.safeParse(process.env);
