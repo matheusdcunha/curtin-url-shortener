@@ -29,8 +29,7 @@ afterAll(async () => {
 });
 
 describe("[E2E] GET /:code", () => {
-  it("deve redirecionar para a URL original a partir do código", async () => {
-    // Cria uma URL encurtada primeiro
+  it("should redirect to the original URL from the code", async () => {
     const createResponse = await app.inject({
       method: "POST",
       url: "/url",
@@ -39,7 +38,6 @@ describe("[E2E] GET /:code", () => {
     expect(createResponse.statusCode).toBe(201);
     const { code } = createResponse.json();
 
-    // Faz o redirect
     const redirectResponse = await app.inject({
       method: "GET",
       url: `/${code}`,
@@ -48,10 +46,10 @@ describe("[E2E] GET /:code", () => {
     expect(redirectResponse.headers.location).toBe("https://www.youtube.com/");
   });
 
-  it("deve retornar 404 para código inexistente", async () => {
+  it("should return 404 for a non-existent code", async () => {
     const response = await app.inject({
       method: "GET",
-      url: "/codigo-inexistente",
+      url: "/non-existent-code",
     });
     expect(response.statusCode).toBe(404);
     expect(response.json()).toHaveProperty("error");
