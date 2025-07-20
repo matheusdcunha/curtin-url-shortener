@@ -3,6 +3,8 @@ export interface HashUrlInterface {
 }
 
 export class HashUrl implements HashUrlInterface {
+  constructor(private codeEncryptLength: number) {}
+
   execute(url: string): string {
     function convertToBase62(number: number) {
       const characters =
@@ -19,7 +21,6 @@ export class HashUrl implements HashUrlInterface {
 
     // Gera um hash da string de entrada
     let hash = 0;
-    const codeEncryptLength = 7;
 
     // Algoritmo simples de hash
     for (let i = 0; i < url.length; i++) {
@@ -40,11 +41,11 @@ export class HashUrl implements HashUrlInterface {
     let code = convertToBase62(hash);
 
     // Ajusta o tamanho do código
-    if (code.length > codeEncryptLength) {
-      code = code.substring(0, codeEncryptLength);
+    if (code.length > this.codeEncryptLength) {
+      code = code.substring(0, this.codeEncryptLength);
     } else {
       // Preenche com caracteres adicionais se for menor que o codeEncryptLength desejado
-      while (code.length < codeEncryptLength) {
+      while (code.length < this.codeEncryptLength) {
         code += convertToBase62(Math.floor(Math.random() * 62));
       }
     }
