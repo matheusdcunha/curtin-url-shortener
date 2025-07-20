@@ -4,7 +4,7 @@ import { env } from "@/env";
 import mongoose from "mongoose";
 
 export const connectDB = async (): Promise<void> => {
-  const mongoURI = `mongodb://${env.MONGO_HOST}:${env.MONGO_PORT}/${env.MONGO_DB_NAME}`;
+  const mongoURI = `mongodb://${env.MONGO_HOST}:${env.MONGO_PORT}/${process.env.MONGO_DB_NAME || env.MONGO_DB_NAME}`;
 
   try {
     await mongoose.connect(mongoURI);

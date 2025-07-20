@@ -7,7 +7,7 @@ import {
 } from "../url-repository";
 
 export class RedisUrlRepository implements UrlRepository {
-  private cacheKeyPrefix = "url:";
+  private cacheKeyPrefix = `${process.env.REDIS_PREFIX || ""}url:`;
 
   private cacheTime = 5 * 24 * 60 * 60; // 5 days in second
   private cacheTTL = this.cacheTime;

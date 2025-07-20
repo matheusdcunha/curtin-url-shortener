@@ -1,4 +1,6 @@
-process.env.MONGO_DB_NAME = "curtin_url_shortener_test";
+const uniqueId = Math.random().toString(36).substring(2, 10);
+process.env.MONGO_DB_NAME = `curtin_url_shortener_test_${uniqueId}`;
+process.env.REDIS_PREFIX = `test_${uniqueId}:`;
 
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { app } from "@/app";
@@ -17,7 +19,7 @@ beforeEach(async () => {
       await collection.deleteMany({});
     }
   }
-  await redisClient.flushall(); 
+  await redisClient.flushall();
 });
 afterAll(async () => {
   if (mongoose.connection.db) {
