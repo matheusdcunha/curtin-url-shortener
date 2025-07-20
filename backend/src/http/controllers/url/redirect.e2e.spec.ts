@@ -17,6 +17,7 @@ beforeEach(async () => {
       await collection.deleteMany({});
     }
   }
+  await redisClient.flushall(); 
 });
 afterAll(async () => {
   if (mongoose.connection.db) {
