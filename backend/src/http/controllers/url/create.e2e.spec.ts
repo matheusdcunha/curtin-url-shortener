@@ -4,6 +4,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { app } from "@/app";
 import { connectDB } from "@/database/mongoose";
 import mongoose from "mongoose";
+import { redisClient } from "@/shared/cache/redis";
 
 beforeAll(async () => {
   await connectDB();
@@ -22,6 +23,8 @@ afterAll(async () => {
     await mongoose.connection.db.dropDatabase();
   }
   await mongoose.connection.close();
+  await redisClient.flushall();
+  await redisClient.quit();
   await app.close();
 });
 

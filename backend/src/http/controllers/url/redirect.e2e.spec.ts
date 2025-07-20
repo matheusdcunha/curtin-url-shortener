@@ -4,6 +4,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { app } from "@/app";
 import { connectDB } from "@/database/mongoose";
 import mongoose from "mongoose";
+import { redisClient } from "@/shared/cache/redis";
 
 beforeAll(async () => {
   await connectDB();
@@ -22,35 +23,37 @@ afterAll(async () => {
     await mongoose.connection.db.dropDatabase();
   }
   await mongoose.connection.close();
+  await redisClient.flushall();
+  await redisClient.quit();
   await app.close();
 });
 
 describe("[E2E] GET /:code", () => {
-  it("should redirect to the original URL from the code", async () => {
+  it("deve redirecionar para a URL original a partir do código", async () => {
+    // Cria uma URL encurtada primeiro
     const createResponse = await app.inject({
       method: "POST",
       url: "/url",
-      payload: { url: "https://www.google.com/" },
+      payload: { url: "https://www.youtube.com/" },
     });
     expect(createResponse.statusCode).toBe(201);
     const { code } = createResponse.json();
-    expect(typeof code).toBe("string");
 
     // Faz o redirect
     const redirectResponse = await app.inject({
       method: "GET",
-      url: `${code}`,
+      url: `/${code}`,
     });
     expect(redirectResponse.statusCode).toBe(307);
-    expect(redirectResponse.headers.location).toBe("https://www.google.com/");
+    expect(redirectResponse.headers.location).toBe("https://www.youtube.com/");
   });
 
-  it("should return 404 for non-existent code", async () => {
+  it("deve retornar 404 para código inexistente", async () => {
     const response = await app.inject({
       method: "GET",
-      url: "/codigo-invalido",
+      url: "/codigo-inexistente",
     });
     expect(response.statusCode).toBe(404);
     expect(response.json()).toHaveProperty("error");
   });
-}); 
+});
