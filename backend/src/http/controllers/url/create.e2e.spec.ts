@@ -52,6 +52,6 @@ describe("[E2E] POST /url", () => {
       payload: { url: "not-a-url" },
     });
 
-    expect(response.statusCode).toBe(500);
+    expect(response.statusCode).toBe(400);
   });
 });
