@@ -9,9 +9,15 @@ export class MongoUrlRepository implements UrlRepository {
   }
 
   async saveUrl(urlData: SaveUrlParams): Promise<UrlInterface> {
-    const newUrl = new UrlModel(urlData);
-    await newUrl.save();
-
-    return newUrl;
+    try {
+      const newUrl = await UrlModel.create(urlData);
+      return newUrl;
+    } catch (error: any) {
+      if (error.code === 11000) {
+        const existingUrl = await UrlModel.findOne({ short_code: urlData.short_code }).lean();
+        if(existingUrl) return existingUrl;
+      }
+      throw error;
+    }
   }
 }
