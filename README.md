@@ -17,7 +17,7 @@ Encurtador de URLs simples, rápido e moderno, desenvolvido com Node.js, Fastify
 
 Este projeto é um serviço de encurtamento de URLs. Ele permite que você gere links curtos para URLs longas e faça o redirecionamento automático ao acessar o link curto.
 
-- **Backend:** Node.js + Fastify
+- **Backend:** Node.js + Fastify + TypeScript
 - **Banco de Dados:** MongoDB
 - **Cache:** Redis (para acelerar redirecionamentos)
 - **Testes:** Vitest
