@@ -1,14 +1,7 @@
 import Redis from "ioredis";
 import { env } from "@/env";
 
-const redisConfig = {
-  host: env.REDIS_HOST,
-  port: env.REDIS_PORT,
-
-  maxRetriesPerRequest: null,
-};
-
-export const redisClient = new Redis(redisConfig);
+export const redisClient = new Redis(env.REDIS_URL, { maxRetriesPerRequest: null, });
 
 redisClient.on("connect", () => {
   console.log("✅ Conectado com sucesso ao Redis.");

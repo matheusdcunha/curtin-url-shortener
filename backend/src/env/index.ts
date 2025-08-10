@@ -8,8 +8,7 @@ const envSchema = z.object({
   MONGO_HOST: z.string(),
   MONGO_PORT: z.coerce.number().default(27017),
   MONGO_DB_NAME: z.string(),
-  REDIS_HOST: z.string(),
-  REDIS_PORT: z.coerce.number().default(6379),
+  REDIS_URL: z.string(),
 });
 
 const _env = envSchema.safeParse(process.env);
