@@ -4,7 +4,7 @@ import { env } from "@/env";
 import mongoose from "mongoose";
 
 export const connectDB = async (): Promise<void> => {
-  const mongoURI = env.MONGO_DB_NAME;
+  const mongoURI = env.MONGO_DB_URL;
 
   try {
     await mongoose.connect(mongoURI);
